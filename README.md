@@ -9,7 +9,21 @@
 - **🖥️ Yuyang Tian**: macOS 10.13.1 + CLion + CMake
 - **🐧 Arun Mekkad**: Ubuntu 22.04 LTS + VS Code + CMake
 
+### 📂 File Structure
+    ```
+    Proj5/
+    ├──data/                  # 🖼️ MNIST data files
+    ├── src/                  # 📁 Source files
+        ├── test.py
+        ├── train.py 
+    ├── trained_models        # 📁 Directory for saving trained models
+    ├── README.md             # 📖 Project documentation
+    ```
+
 ## 📌 Tasks
+
+-------------------------------------------------------------------------------------------------------------------
+RUN train.py 
 
 ### TaskA 
 
@@ -26,3 +40,10 @@ Trains a deep learning model on MNIST digits dataset. The model will be trained 
 ### TaskD
 
 Saves the trained model in trained_models folder. Create this folder before running the code.
+
+-------------------------------------------------------------------------------------------------------------------
+RUN test.py
+
+### TaskE
+
+Loads the pre-trained model from local path and tests the model using example dataset.

@@ -1,5 +1,10 @@
-# Author: Yuyang Tian, Arun Mekkad
-# Project 5
+'''
+ * Authors: Yuyang Tian and Arun Mekkad
+ * Date: March 20th 2025
+ * Purpose: Define and train a CNN model on the MNIST handwritten digit dataset, 
+            evaluate its performance during training, visualize the training progress, 
+            and save the trained model to disk.
+'''
 import sys
 import torch
 from torch.utils.data import DataLoader
@@ -11,6 +16,7 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import timeit
 
 # Custom CNN
 class MyCNNNetwork(nn.Module):
@@ -43,7 +49,7 @@ class MyCNNNetwork(nn.Module):
         )
 
 
-    # computes a forward pass for the network
+    # Computes a forward pass for the network
     def forward(self, x):
         # input (x): [batch_size, 1, 28, 28]
         # output: [batch_size, 1]
@@ -56,14 +62,6 @@ class MyCNNNetwork(nn.Module):
         x = self.fc_layers(x)
         # Apply log softmax on the output
         return F.log_softmax(x, 1)
-# useful functions with a comment for each function
-# Downloads and loads the MNIST dataset.
-def load_mnist_test_data():
-    '''
-    :return: MNIST test dataset
-    '''
-    mnist_test = datasets.MNIST(root="./data", train=False, download=True, transform=ToTensor())
-    return mnist_test
 
 # Downloads and loads a train and test data from MNIST dataset
 def load_mnist_data():
@@ -79,7 +77,6 @@ def load_mnist_data():
 # Display the first six sample digits
 def plot_mnist_samples(data):
     '''
-
     :param data: the MNIST dataset
     '''
     figure = plt.figure(figsize=(8, 6))
@@ -120,6 +117,7 @@ def train_network(model, test_loader, train_loader, criterion, optimizer, num_ep
     train_accuracies = []
     test_accuracies = []
     
+    start = timeit.default_timer()
     # Set the model to training mode
     for epoch in range(num_epochs):
         model.train()
@@ -157,14 +155,17 @@ def train_network(model, test_loader, train_loader, criterion, optimizer, num_ep
         print(f"EPOCH [{epoch+1}/{num_epochs}],"
               f"Train Loss: {train_avg_loss:.4f}, Train accuracy: {train_accuracy:.2f}%,"
               f"Test Loss: {test_avg_loss : .4f}, Test accuracy: {test_accuracy:.2f}%,")
-
+        
+    end = timeit.default_timer()
+    print(f"Total training time: {end - start:.2f}s")
     return train_losses, test_losses, train_accuracies, test_accuracies
 
 # Function to plot training and testing error
 def plot_error(train_losses, test_losses):
 
     epochs = range(1, len(train_losses) + 1)
-    plt.figure(figsize=(10,6))
+    fig = plt.figure(figsize=(10,6))
+    fig.canvas.manager.set_window_title("Errors Over Epochs Plot") 
     plt.plot(epochs, train_losses, 'b-o', label = 'Training error (loss)')
     plt.plot(epochs, test_losses, 'r-o', label = 'Testing error (loss)')
     plt.title('Training and Testing Errors over Epochs')
@@ -177,7 +178,8 @@ def plot_error(train_losses, test_losses):
 # Function to plot training and testing accuracies
 def plot_accuracy(train_accuracies, test_accuracies):
     epochs = range(1, len(train_accuracies) + 1)
-    plt.figure(figsize=(10,6))
+    fig = plt.figure(figsize=(10,6))
+    fig.canvas.manager.set_window_title("Accuracy Over Epochs Plot") 
     plt.plot(epochs, train_accuracies, 'm-o', label = 'Training Accuracy')
     plt.plot(epochs, test_accuracies, 'g-o', label = 'Testing Accuracy')
     plt.title('Training and Testing Accuracies over Epochs')
@@ -187,13 +189,8 @@ def plot_accuracy(train_accuracies, test_accuracies):
     plt.grid(True)
     plt.show()
 
-# main function (yes, it needs a comment too)
+# Trains a new model using MNIST digit dataset and save the model to trained_models directory
 def main(argv):
-    # handle any command line arguments in argv
-    # main function code
-    # test_data = load_mnist_test_data()
-    # plot_mnist_samples(test_data)
-
     # Load MNIST data
     train_data, test_data = load_mnist_data()
 
@@ -226,6 +223,7 @@ def main(argv):
     print(f"Trained model saved to mnist_trained_model.pth. Check trained_models folder")
 
     return
+
 if __name__ == "__main__":
     main(sys.argv)
 
