@@ -58,6 +58,14 @@ class MyCNNNetwork(nn.Module):
         return F.log_softmax(x, 1)
 # useful functions with a comment for each function
 # Downloads and loads the MNIST dataset.
+def load_mnist_test_data():
+    '''
+    :return: MNIST test dataset
+    '''
+    mnist_test = datasets.MNIST(root="./data", train=False, download=True, transform=ToTensor())
+    return mnist_test
+
+# Downloads and loads a train and test data from MNIST dataset
 def load_mnist_data():
     '''
     Load train and test data
