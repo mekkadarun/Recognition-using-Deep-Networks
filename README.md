@@ -19,4 +19,10 @@ The MNIST dataset is loaded using `load_mnist_test_data`, and the first 6 digits
 
 The CNN architecture is implemented in the `MyCNNNetwork` class. All layers are defined in the `__init__` method, and the `forward` method specifies how the input flows through those layers.
 
-Please use this network in the training process.
+### TaskC
+
+Trains a deep learning model on MNIST digits dataset. The model will be trained for 5 epochs, with each batch of training data containing 64 samples (batch_size = 64)
+
+### TaskD
+
+Saves the trained model in trained_models folder. Create this folder before running the code.
