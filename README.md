@@ -12,10 +12,12 @@
 ### 📂 File Structure
     ```
     Proj5/
-    ├──data/                  # 🖼️ MNIST data files
+    ├── data/                 # 📁 Data files
+    |   ├── MNIST             # 🖼️ MNIST Samples
+    |   ├── Handwritten       # 🖼️ Handwritten Samples
     ├── src/                  # 📁 Source files
-        ├── test.py
-        ├── train.py 
+    |   ├── test.py
+    |   ├── train.py 
     ├── trained_models        # 📁 Directory for saving trained models
     ├── README.md             # 📖 Project documentation
     ```
@@ -47,3 +49,10 @@ RUN test.py
 ### TaskE
 
 Loads the pre-trained model from local path and tests the model using example dataset.
+
+### TaskF
+RUN test.py <handwritten_directory_path>
+
+Eg. test.py ../data/Handwritten
+
+Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.

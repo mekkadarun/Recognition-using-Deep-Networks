@@ -69,8 +69,8 @@ def load_mnist_data():
     Load train and test data
     :return: Train and test data
     '''
-    train_data = datasets.MNIST(root="./data", train=True, download=True, transform=ToTensor())
-    test_data = datasets.MNIST(root="./data", train=False, download=True, transform=ToTensor())
+    train_data = datasets.MNIST(root="../data", train=True, download=True, transform=ToTensor())
+    test_data = datasets.MNIST(root="../data", train=False, download=True, transform=ToTensor())
 
     return train_data, test_data
 
@@ -153,8 +153,8 @@ def train_network(model, test_loader, train_loader, criterion, optimizer, num_ep
         test_accuracies.append(test_accuracy)
 
         print(f"EPOCH [{epoch+1}/{num_epochs}],"
-              f"Train Loss: {train_avg_loss:.4f}, Train accuracy: {train_accuracy:.2f}%,"
-              f"Test Loss: {test_avg_loss : .4f}, Test accuracy: {test_accuracy:.2f}%,")
+              f"Train Loss: {train_avg_loss:.4f}, Train accuracy: {train_accuracy:.2f}%"
+              f"Test Loss: {test_avg_loss : .4f}, Test accuracy: {test_accuracy:.2f}%")
         
     end = timeit.default_timer()
     print(f"Total training time: {end - start:.2f}s")
@@ -195,7 +195,7 @@ def main(argv):
     train_data, test_data = load_mnist_data()
 
     # Choose a batch size
-    batch_size = 64
+    batch_size = 256
 
     # Create data loaders
     train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle= True)
@@ -208,7 +208,7 @@ def main(argv):
     criterion = nn.NLLLoss()
 
     # Define the optimizer
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.AdamW(model.parameters(), lr=0.001)
 
     # Train the network
     num_epochs = 5
@@ -219,7 +219,7 @@ def main(argv):
     plot_accuracy(train_accuracies, test_accuracies)
 
     # Save the trained model
-    torch.save(model.state_dict(), './trained_models/mnist_trained_model.pth')
+    torch.save(model.state_dict(), '../trained_models/mnist_trained_model.pth')
     print(f"Trained model saved to mnist_trained_model.pth. Check trained_models folder")
 
     return
