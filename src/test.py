@@ -39,7 +39,7 @@ def predict_digit(model, image):
     return output, predicted.item()
 
 # Plot the example images with their predictions
-def plot(examples,model):
+def plot(examples):
     num = len(examples)
 
     num_rows = int(math.sqrt(num))
@@ -48,8 +48,7 @@ def plot(examples,model):
     fig = plt.figure(figsize=(2 * num_cols, 2 * num_rows))
     fig.canvas.manager.set_window_title("Prediction Results") 
     for i in range(num):
-        image, true_label = examples[i]
-        output, prediction = predict_digit(model,image)
+        image, prediction = examples[i]
         plt.subplot(num_rows, num_cols, i+1)
         plt.imshow(image.squeeze(), cmap='gray')
         plt.axis("off")
@@ -99,11 +98,11 @@ def test_on_mnist(model, num_examples=10):
         # Run the prediction method
         output, prediction = predict_digit(model, image)
         # Print the results
-        print_prediction_result(filename="Example {i}", output=output, predicted_digit=prediction)
+        print_prediction_result(filename=f"Example {i+1}", output=output, predicted_digit=prediction)
         # Append for plotting
         results_for_plot.append((image, prediction))
     # Plot the results
-    plot(results_for_plot, model)
+    plot(results_for_plot)
 
 # Runs the test on the handwritten images using pre-trained model
 def test_on_handwritten_images(model, img_dir):
@@ -125,7 +124,7 @@ def test_on_handwritten_images(model, img_dir):
             # Append for plotting
             handwritten_examples.append((processed_tensor,prediction))
     # Plot the results
-    plot(handwritten_examples,model)
+    plot(handwritten_examples)
 
 # Tests a pre-trained model on either the first n images from MNIST dataset or provided directory path
 def main(argv):
