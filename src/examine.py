@@ -8,8 +8,9 @@
 import torch
 import torchvision
 import matplotlib.pyplot as plt
+import numpy as np
 import cv2
-from util import load_model
+from test import load_model
 from train import MyCNNNetwork
 from torchvision.transforms import ToTensor
 

@@ -5,14 +5,28 @@
             evaluates it on a specified number of test examples, 
             and visualizes the predictions.
 '''
+import torch
+import torchvision
+from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
+import torch.nn.functional as F
+from train import MyCNNNetwork # Import network definition from train.py
 import math
 import os
 import sys
 from PIL import Image
 import cv2
 import numpy as np
-from util import *
+
+
+# Loads the trained model from path
+def load_model(path):
+    # Create an instance of MyCNNNetwork
+    model = MyCNNNetwork()
+    model.load_state_dict(torch.load(path))
+    model.eval()
+    return model
+
 # Predicts the digit for a given image tensor
 def predict_digit(model, image):
     with torch.no_grad():
@@ -75,7 +89,7 @@ def print_prediction_result(filename, output, predicted_digit):
 # Runs the test on the first num_examples images from mnist dataset
 def test_on_mnist(model, num_examples=10):
     # Load the MNIST test dataset
-    _, test_dataset = load_mnist_data()
+    test_dataset = torchvision.datasets.MNIST(root='../data', train=False, download=True, transform=ToTensor())
     test_examples = [(test_dataset[i][0], test_dataset[i][1]) for i in range (num_examples)]
     print(f"Testing on the first {num_examples} example images from MNIST:")
     results_for_plot =[]
