@@ -1,14 +1,15 @@
 # CS5330-proj5
+___________________________________________________________________________________________________________________
 ## 👥 Team Members
 
 1. **Yuyang Tian**
 2. **Arun Mekkad**
-
+___________________________________________________________________________________________________________________
 ## 💻 Environment
 
 - **🖥️ Yuyang Tian**: macOS 10.13.1 + CLion + CMake
 - **🐧 Arun Mekkad**: Ubuntu 22.04 LTS + VS Code + CMake
-
+___________________________________________________________________________________________________________________
 ### 📂 File Structure
     ```
     Proj5/
@@ -18,14 +19,17 @@
     ├── src/                  # 📁 Source files
     |   ├── test.py
     |   ├── train.py 
+    |   ├── examine.py 
     ├── trained_models        # 📁 Directory for saving trained models
     ├── README.md             # 📖 Project documentation
     ```
+___________________________________________________________________________________________________________________
 
 ## 📌 Tasks
 
--------------------------------------------------------------------------------------------------------------------
-RUN train.py 
+--- Build and train a network to recognize digits ---
+
+-> RUN train.py 
 
 ### TaskA 
 
@@ -43,16 +47,30 @@ Trains a deep learning model on MNIST digits dataset. The model will be trained 
 
 Saves the trained model in trained_models folder. Create this folder before running the code.
 
--------------------------------------------------------------------------------------------------------------------
-RUN test.py
+-> RUN test.py
 
 ### TaskE
 
 Loads the pre-trained model from local path and tests the model using example dataset.
 
 ### TaskF
-RUN test.py <handwritten_directory_path>
+
+-> RUN test.py <handwritten_directory_path>
 
 Eg. test.py ../data/Handwritten
 
 Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
+-------------------------------------------------------------------------------------------------------------------
+
+--- Examine the network ---
+
+RUN examine.py
+
+### TaskA
+
+Plot the weighted filters from first convolutional layer
+
+### TaskB
+
+Visualize the weighted filter and first image from train dataset with applied filters
+-------------------------------------------------------------------------------------------------------------------
