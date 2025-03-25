@@ -8,8 +8,6 @@
 import sys
 import torch
 from torch.utils.data import DataLoader
-from torchvision import datasets
-from torchvision.transforms import ToTensor
 import matplotlib
 matplotlib.use("TkAgg")  # Standard backend
 import matplotlib.pyplot as plt
@@ -17,6 +15,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import timeit
+from util import load_mnist_data
 
 # Custom CNN
 class MyCNNNetwork(nn.Module):
@@ -62,17 +61,6 @@ class MyCNNNetwork(nn.Module):
         x = self.fc_layers(x)
         # Apply log softmax on the output
         return F.log_softmax(x, 1)
-
-# Downloads and loads a train and test data from MNIST dataset
-def load_mnist_data():
-    '''
-    Load train and test data
-    :return: Train and test data
-    '''
-    train_data = datasets.MNIST(root="../data", train=True, download=True, transform=ToTensor())
-    test_data = datasets.MNIST(root="../data", train=False, download=True, transform=ToTensor())
-
-    return train_data, test_data
 
 # Display the first six sample digits
 def plot_mnist_samples(data):
