@@ -182,6 +182,9 @@ def main(argv):
     # Load MNIST data
     train_data, test_data = load_mnist_data()
 
+    # Plot taskA
+    plot_mnist_samples(test_data)
+
     # Choose a batch size
     batch_size = 256
 
