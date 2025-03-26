@@ -131,7 +131,18 @@ def plot_error(train_losses):
     plt.grid(True)
     plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
     plt.show()
-
+def plot_accuracy(train_accuracies):
+    epochs = range(1, len(train_accuracies) + 1)
+    fig = plt.figure(figsize=(10,6))
+    fig.canvas.manager.set_window_title("Accuracy Over Epochs Plot")
+    plt.plot(epochs, train_accuracies, 'm-o', label = 'Training Accuracy')
+    plt.title('Training Accuracies over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy (%)')
+    plt.legend()
+    plt.grid(True)
+    plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    plt.show()
 
 # Main pipeline: load pretrained model, apply transfer learning, train on Greek letters, save model
 def main():
@@ -151,10 +162,11 @@ def main():
     criterion = nn.NLLLoss()
     optimizer = optim.AdamW(model.parameters(), lr=0.001)
 
-    train_losses, _ = train_network(model, greek_train_loader, criterion, optimizer, num_epochs=25)
+    train_losses, train_accuracies = train_network(model, greek_train_loader, criterion, optimizer, num_epochs=20)
 
     # Plot loss curve to tune nepoch visually
     plot_error(train_losses)
+    plot_accuracy(train_accuracies)
 
     # Save fine-tuned Greek model
     torch.save(model.state_dict(), '../trained_models/greek_trained_model.pth')
