@@ -27,11 +27,11 @@ ________________________________________________________________________________
 
 ## 📌 Tasks
 
---- Build and train a network to recognize digits ---
+## 1.Build and train a network to recognize digits
 
--> RUN train.py 
+* RUN `train.py` 
 
-### TaskA 
+### TaskA
 
 The MNIST dataset is loaded using `load_mnist_test_data`, and the first 6 digits are visualized by calling `plot_mnist_samples`. Both steps are executed in the `main` function.
 
@@ -47,7 +47,7 @@ Trains a deep learning model on MNIST digits dataset. The model will be trained 
 
 Saves the trained model in trained_models folder. Create this folder before running the code.
 
--> RUN test.py
+* `RUN test.py`
 
 ### TaskE
 
@@ -55,16 +55,17 @@ Loads the pre-trained model from local path and tests the model using example da
 
 ### TaskF
 
--> RUN test.py <handwritten_directory_path>
+* RUN `test.py <handwritten_directory_path>`
 
 Eg. test.py ../data/Handwritten
 
 Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
+
 -------------------------------------------------------------------------------------------------------------------
 
---- Examine the network ---
+## 2. Examine the network ---
 
-RUN examine.py
+RUN `examine.py`
 
 ### TaskA
 
@@ -73,4 +74,18 @@ Plot the weighted filters from first convolutional layer
 ### TaskB
 
 Visualize the weighted filter and first image from train dataset with applied filters
+
+
 -------------------------------------------------------------------------------------------------------------------
+
+
+
+## 3. Transfer Leaning on Greek Letters
+
+Run `train_greek.py`
+
+Trains a deep learning model on greek_train dataset. The model will be trained for 20 epochs, with each batch of training data containing 5 samples (batch_size = 5)
+
+Run `test_greek.py`
+
+Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
