@@ -85,8 +85,8 @@ def test_img_dir(model, img_dir, transform, reverse_map):
             total += 1
             handwritten_examples.append((image_tensor, predicted_label))
 
-    plot(handwritten_examples)  # Visualize results
     print(f"\nTotal: {total}, Correct: {correct}, Accuracy: {correct / total * 100:.2f}%")
+    plot(handwritten_examples)  # Visualize results
 
 
 # Entry point: loads model and test set, runs evaluation
