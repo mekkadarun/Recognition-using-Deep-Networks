@@ -96,9 +96,23 @@ Adds all the images within the provided directory, pre-processes it, runs the te
 
 ### 1.  More greek letters recognition
 
-* 'Lambda' and 'theta' images were added to both training and testing dataset. The number of greek letter image classes in `train_greek` will be used to replace the last layer of fully connected layer.
-* Run `train_greek.py`, it identify the number of letters type, then train the networks to classify all types of letters. The model will be saved as `../trained_models/greek_trained_{num_classes}.pth`
-* Run `test_greek.py`, it finds the model path and performs the letter recognition on `test_greek` folder, lastly, visulizes the recognition results.
+### Train/ Test with Extension Flags
+
+You can now pass `--extension` to both **`train_greek.py`** and **`test_greek.py`**:
+
+- **Added Lambda & Theta:**
+   These images were introduced in both training and testing sets. The total number of Greek letters in `train_greek` dynamically sets the size of the final fully connected layer.
+- **Training (`train_greek.py`)**
+  - **No extension flag**: Trains on `data/greek_train_3` and tests on `data/greek_test_3`.
+    - A alternative test dataset `data/greek_test_3(2)` is provided to play around
+  - **`--extension` flag**: Trains on `data/greek_train_5` and tests on `data/greek_test_5` (because we’ve added lambda and theta).
+  - Automatically detects the number of letters and configures the model’s final layer.
+  - Saves as `../trained_models/greek_trained_{num_classes}.pth`. The default 3-class model is also stored as `../trained_models/greek_trained_model.pth`.
+- **Testing (`test_greek.py`)**
+  - **No extension flag**: Loads the default model from `../trained_models/greek_trained_model.pth`.
+    - Performs letter recognition on the `test_greek_3` folder and visualizes the results.
+  - **`--extension` flag**: Loads `../trained_models/greek_trained_{num_classes}.pth`.
+    - Performs letter recognition on the `test_greek_5` folder and visualizes the results.
 
 ### 2. DC-GAN
 
