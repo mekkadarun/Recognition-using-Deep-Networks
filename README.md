@@ -92,10 +92,27 @@ Adds all the images within the provided directory, pre-processes it, runs the te
 
 
 
-# Extension
+## Extension
 
-##1.  More greek letters recognition
+### 1.  More greek letters recognition
 
 * 'Lambda' and 'theta' images were added to both training and testing dataset. The number of greek letter image classes in `train_greek` will be used to replace the last layer of fully connected layer.
 * Run `train_greek.py`, it identify the number of letters type, then train the networks to classify all types of letters. The model will be saved as `../trained_models/greek_trained_{num_classes}.pth`
 * Run `test_greek.py`, it finds the model path and performs the letter recognition on `test_greek` folder, lastly, visulizes the recognition results.
+
+### 2. DC-GAN
+
+Please refer to [Pytorch Tutorials](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html#results) for more information on how DC-GAN works under the hood.
+
+* **Training** with `train_dc_gan.py`
+
+  This script trains DC-GAN networks based on the `data/celeba_10k` folder, which contains 10,000 images from the [Large-scale CelebFaces Attributes (CelebA) Dataset](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html). Each image is associated with a celebrity ID (some celebrities have multiple images). The original CelebA dataset has over 200K images; for assignment purposes, it’s downsampled to 10K.
+
+  The generator model is saved as `../trained_models/gan_models_generator.pth` and the discriminator is saved as `../trained_models/gan_models_discriminator.pth`
+
+  **Note**: Training can take about 40 minutes on a CPU, so if you prefer, you can skip retraining and just load the existing model for generating images.
+
+* **Generating and Visualizing with `visualize_gan.py`**
+   This script loads the trained DC-GAN model and displays a batch of generated images. It points to the model path from the training script, then visualizes images created by the trained generator.
+
+* The result images was saved to `outputs` dir for reference
