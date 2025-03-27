@@ -6,7 +6,7 @@
             Includes helper functions for label mapping, transformation, model loading, prediction,
             and batch evaluation with accuracy reporting.
 '''
-
+import sys
 import os
 import torch
 import torch.nn as nn
@@ -91,10 +91,15 @@ def test_img_dir(model, img_dir, transform, reverse_map):
 
 
 # Entry point: loads model and test set, runs evaluation
-def main():
+def main(argv):
+    if len(argv) > 1 and argv[1] == '--extension':
+        train_path = '../data/greek_train_5'
+        test_greek_path = '../data/greek_test_5'
+    else:
+        train_path = '../data/greek_train_3'
+        test_greek_path = '../data/greek_test_3'
     # 1. Check how many classes are in the dataset
-    train_path = '../data/greek_train'
-    test_greek_path = '../data/greek_test'
+
     dataset = datasets.ImageFolder(root=train_path)
     letters = dataset.classes
     num_classes = len(letters)
@@ -116,4 +121,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)

@@ -10,15 +10,14 @@
 '''
 
 import timeit
+import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 from torch.utils.data import DataLoader
 from torchvision import datasets
-from train import MyCNNNetwork, evaluate_model
+from train import MyCNNNetwork, plot_error, plot_accuracy, train_network
 
 # Custom transformation to mimic MNIST-style preprocessing for Greek letter images
 class GreekTransform:
@@ -71,41 +70,6 @@ def transfer_learning(model, num_classes):
     return model
 
 
-# Trains the model for a given number of epochs and returns training loss/accuracy per epoch
-def train_network(model, train_loader, criterion, optimizer, num_epochs=5):
-    train_losses = []
-    train_accuracies = []
-
-    start = timeit.default_timer()
-    for epoch in range(num_epochs):
-        model.train()
-        correct_train = 0
-        total_train = 0
-        running_loss = 0.0
-
-        for inputs, labels in train_loader:
-            optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
-
-            running_loss += loss.item()
-            _, predicted = torch.max(outputs, 1)
-            total_train += labels.size(0)
-            correct_train += (predicted == labels).sum().item()
-
-        avg_loss, accuracy = evaluate_model(model, train_loader, criterion)
-        train_losses.append(avg_loss)
-        train_accuracies.append(accuracy)
-
-        print(f"EPOCH [{epoch + 1}/{num_epochs}] - Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%")
-
-    end = timeit.default_timer()
-    print(f"Total training time: {end - start:.2f}s")
-    return train_losses, train_accuracies
-
-
 # Predicts the Greek letter label for a single input image tensor
 def predict_letter(model, image, reverse_map):
     model.eval()
@@ -118,36 +82,15 @@ def predict_letter(model, image, reverse_map):
         return output, reverse_map[predicted.item()]  # Return label name
 
 
-# Plots the training loss over epochs
-def plot_error(train_losses):
-    epochs = range(1, len(train_losses) + 1)
-    fig = plt.figure(figsize=(10, 6))
-    fig.canvas.manager.set_window_title("Errors Over Epochs Plot")
-    plt.plot(epochs, train_losses, 'b-o', label='Training error (loss)')
-    plt.title('Training Errors over Epochs')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.grid(True)
-    plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    plt.show()
-def plot_accuracy(train_accuracies):
-    epochs = range(1, len(train_accuracies) + 1)
-    fig = plt.figure(figsize=(10,6))
-    fig.canvas.manager.set_window_title("Accuracy Over Epochs Plot")
-    plt.plot(epochs, train_accuracies, 'm-o', label = 'Training Accuracy')
-    plt.title('Training Accuracies over Epochs')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy (%)')
-    plt.legend()
-    plt.grid(True)
-    plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    plt.show()
-
 # Main pipeline: load pretrained model, apply transfer learning, train on Greek letters, save model
-def main():
+def main(argv):
     model_path = '../trained_models/mnist_trained_model.pth'
-    train_path = '../data/greek_train'
+    if len(argv) > 1 and argv[1] == '--extension':
+        train_path = '../data/greek_train_5'
+        test_path = '../data/greek_test_5'
+    else:
+        train_path = '../data/greek_train_3'
+        test_path = '../data/greek_test_3'
 
     # 1. Load the original MNIST base model
     pre_model = load_model(model_path)
@@ -170,16 +113,21 @@ def main():
         batch_size=5,
         shuffle=True
     )
+    greek_test_loader = DataLoader(
+        datasets.ImageFolder(root=test_path, transform=transform),
+        batch_size=5,
+        shuffle=True
+    )
 
     # 5. Train the adapted model
     criterion = nn.NLLLoss()
     optimizer = optim.AdamW(model.parameters(), lr=0.001)
 
-    train_losses, train_accuracies = train_network(model, greek_train_loader, criterion, optimizer, num_epochs=num_classes*7)
+    train_losses, test_losses, train_accuracies, test_accuracies = train_network(model, greek_test_loader, greek_train_loader, criterion, optimizer, num_epochs=50)
 
     # 6. Plot results
-    plot_error(train_losses)
-    plot_accuracy(train_accuracies)
+    plot_error(train_losses, test_losses)
+    plot_accuracy(train_accuracies, test_accuracies)
 
     # 7. Save fine-tuned model
     if num_classes == 3:
@@ -191,4 +139,4 @@ def main():
     print(f"Trained model saved to {out_path} (check trained_models folder)")
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
