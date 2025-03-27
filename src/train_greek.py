@@ -55,18 +55,18 @@ def load_model(path):
     return model
 
 
-# Applies transfer learning: freezes base network and replaces the final layer
-def transfer_learning(model):
+# Applies transfer learning: freezes base network and replaces the final layer of the MNIST network to match 'num_classes' (frozen base).
+def transfer_learning(model, num_classes):
     for param in model.parameters():
         param.requires_grad = False  # Freeze all layers
 
     # Replace last layer to output 3 Greek letter classes
     model.fc_layers[-1] = nn.Linear(
         in_features=model.fc_layers[-1].in_features,
-        out_features=3
+        out_features=num_classes
     )
 
-    print("\nModel Architecture after transfer learning:")
+    print(f"\nModel Architecture after transfer learning for {num_classes} classes:")
     print(model)
     return model
 
@@ -149,9 +149,21 @@ def main():
     model_path = '../trained_models/mnist_trained_model.pth'
     train_path = '../data/greek_train'
 
-    pre_model = load_model(model_path)  # Load original MNIST model
-    model = transfer_learning(pre_model)  # Adapt it to Greek classification
+    # 1. Load the original MNIST base model
+    pre_model = load_model(model_path)
 
+    # 2. Check how many classes are in the dataset
+    #    For example, alpha/beta/gamma => 3 classes
+    dataset = datasets.ImageFolder(root=train_path)
+    letters = dataset.classes
+    num_classes = len(letters)
+    print(dataset.classes)
+    print(f"Detected {num_classes} classes in '{train_path}': {letters}")
+
+    # 3. Adapt model to have 'num_classes' outputs
+    model = transfer_learning(pre_model, num_classes)
+
+    # 4. Create data loader with GreekTransform
     transform = get_transform()
     greek_train_loader = DataLoader(
         datasets.ImageFolder(root=train_path, transform=transform),
@@ -159,19 +171,24 @@ def main():
         shuffle=True
     )
 
+    # 5. Train the adapted model
     criterion = nn.NLLLoss()
     optimizer = optim.AdamW(model.parameters(), lr=0.001)
 
-    train_losses, train_accuracies = train_network(model, greek_train_loader, criterion, optimizer, num_epochs=20)
+    train_losses, train_accuracies = train_network(model, greek_train_loader, criterion, optimizer, num_epochs=num_classes*7)
 
-    # Plot loss curve to tune nepoch visually
+    # 6. Plot results
     plot_error(train_losses)
     plot_accuracy(train_accuracies)
 
-    # Save fine-tuned Greek model
-    torch.save(model.state_dict(), '../trained_models/greek_trained_model.pth')
-    print(f"Trained model saved to greek_trained_model.pth. Check trained_models folder")
+    # 7. Save fine-tuned model
+    if num_classes == 3:
+        out_path = '../trained_models/greek_trained_model.pth'
+    else:
+        out_path = f'../trained_models/greek_trained_{num_classes}.pth'
 
+    torch.save(model.state_dict(), out_path)
+    print(f"Trained model saved to {out_path} (check trained_models folder)")
 
 if __name__ == "__main__":
     main()

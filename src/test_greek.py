@@ -15,11 +15,12 @@ from PIL import Image
 from train import MyCNNNetwork
 from train_greek import GreekTransform
 from test import plot
+from torchvision import datasets
 
 
 # Returns forward and reverse mappings between class names and integer labels
 def get_label_map():
-    label_map = {'alpha': 0, 'beta': 1, 'gamma': 2}
+    label_map = {'alpha': 0, 'beta': 1, 'gamma': 2, 'lambda':3, 'theta': 4}
     reverse_map = {v: k for k, v in label_map.items()}
     return label_map, reverse_map
 
@@ -35,11 +36,11 @@ def get_transform():
 
 
 # Loads the fine-tuned Greek letter classification model from file
-def load_model(path):
+def load_model(path, num_classes):
     model = MyCNNNetwork()
     model.fc_layers[-1] = nn.Linear(
         in_features=model.fc_layers[-1].in_features,
-        out_features=3  # Match fine-tuned model (alpha, beta, gamma)
+        out_features=num_classes  # Match fine-tuned model (alpha, beta, gamma)
     )
     model.load_state_dict(torch.load(path))
     model.eval()
@@ -91,14 +92,27 @@ def test_img_dir(model, img_dir, transform, reverse_map):
 
 # Entry point: loads model and test set, runs evaluation
 def main():
-    model_path = '../trained_models/greek_trained_model.pth'
-    handwritten_greek_path = '../data/greek_test'
+    # 1. Check how many classes are in the dataset
+    train_path = '../data/greek_train'
+    test_greek_path = '../data/greek_test'
+    dataset = datasets.ImageFolder(root=train_path)
+    letters = dataset.classes
+    num_classes = len(letters)
+    print(dataset.classes)
+    print(f"Detected {num_classes} classes in '{train_path}': {letters}")
+    # 2. find fine-tuned model path
+    if num_classes == 3:
+        model_path = '../trained_models/greek_trained_model.pth'
+    else:
+        model_path = f'../trained_models/greek_trained_{num_classes}.pth'
 
+    # 3. Load models
+    model = load_model(model_path, num_classes)
+
+    # 4. Testing
     transform = get_transform()
     _, reverse_map = get_label_map()
-    model = load_model(model_path)
-
-    test_img_dir(model, handwritten_greek_path, transform, reverse_map)
+    test_img_dir(model, test_greek_path, transform, reverse_map)
 
 
 if __name__ == "__main__":

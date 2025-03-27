@@ -89,3 +89,13 @@ Trains a deep learning model on greek_train dataset. The model will be trained f
 Run `test_greek.py`
 
 Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
+
+
+
+# Extension
+
+##1.  More greek letters recognition
+
+* 'Lambda' and 'theta' images were added to both training and testing dataset. The number of greek letter image classes in `train_greek` will be used to replace the last layer of fully connected layer.
+* Run `train_greek.py`, it identify the number of letters type, then train the networks to classify all types of letters. The model will be saved as `../trained_models/greek_trained_{num_classes}.pth`
+* Run `test_greek.py`, it finds the model path and performs the letter recognition on `test_greek` folder, lastly, visulizes the recognition results.
