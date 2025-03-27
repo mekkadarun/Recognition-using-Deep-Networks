@@ -90,7 +90,7 @@ def main():
         'discriminator_path': '../trained_models/gan_models_discriminator.pth'
     }
 
-    # Load models (replace with your actual model classes)
+    # Load models
     generator, discriminator = load_gan_models(
         CONFIG['generator_path'],
         CONFIG['discriminator_path'],
@@ -102,7 +102,7 @@ def main():
     # Create fixed noise
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     fixed_noise = torch.randn(64, CONFIG['latent_vector_size'], 1, 1, device=device)
-
+    generator = generator.to(device)
     # Visualize results
     visualize_gan_results(
         generator,
