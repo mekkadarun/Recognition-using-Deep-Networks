@@ -22,7 +22,7 @@ import timeit
 class MyCNNNetwork(nn.Module):
     def __init__(self):
         super().__init__()
-        self.drop_percent = 0.3
+        self.drop_percent = 0.5
         # CNN related layer, including conv, ReLU, pooling and dropout
         self.cnn_layers = nn.Sequential(
             # First Conv layer: C_out = 10, kernel size = 5
@@ -193,6 +193,9 @@ def plot_accuracy(train_accuracies, test_accuracies):
 def main(argv):
     # Load MNIST data
     train_data, test_data = load_mnist_data()
+
+    # Plot taskA
+    # plot_mnist_samples(test_data)
 
     # Choose a batch size
     batch_size = 256
