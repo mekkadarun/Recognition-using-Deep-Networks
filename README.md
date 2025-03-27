@@ -101,7 +101,7 @@ Adds all the images within the provided directory, pre-processes it, runs the te
 You can now pass `--extension` to both **`train_greek.py`** and **`test_greek.py`**:
 
 - **Added Lambda & Theta:**
-   These images were introduced in both training and testing sets. The total number of Greek letters in `train_greek` dynamically sets the size of the final fully connected layer.
+   These images were introduced in both training and testing sets. The total number of Greek letters in training set dynamically sets the size of the final fully connected layer.
 - **Training (`train_greek.py`)**
   - **No extension flag**: Trains on `data/greek_train_3` and tests on `data/greek_test_3`.
     - A alternative test dataset `data/greek_test_3(2)` is provided to play around
