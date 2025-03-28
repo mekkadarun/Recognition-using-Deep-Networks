@@ -22,7 +22,7 @@ import timeit
 class MyCNNNetwork(nn.Module):
     def __init__(self):
         super().__init__()
-        self.drop_percent = 0.5
+        self.drop_percent = 0.3
         # CNN related layer, including conv, ReLU, pooling and dropout
         self.cnn_layers = nn.Sequential(
             # First Conv layer: C_out = 10, kernel size = 5

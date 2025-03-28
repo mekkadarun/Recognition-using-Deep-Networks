@@ -52,7 +52,7 @@ def plot(examples):
         plt.subplot(num_rows, num_cols, i+1)
         plt.imshow(image.squeeze(), cmap='gray')
         plt.axis("off")
-        plt.title(f"Prediction: {prediction}")
+        plt.title(f"Prediction: {prediction}", fontsize=16)
     plt.tight_layout()
     plt.show()
 
