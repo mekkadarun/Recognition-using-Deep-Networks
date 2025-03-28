@@ -7,8 +7,8 @@ ________________________________________________________________________________
 ___________________________________________________________________________________________________________________
 ## 💻 Environment
 
-- **🖥️ Yuyang Tian**: macOS 10.13.1 + CLion + CMake
-- **🐧 Arun Mekkad**: Ubuntu 22.04 LTS + VS Code + CMake
+- **🖥️ Yuyang Tian**: macOS 10.13.1 + CLion
+- **🐧 Arun Mekkad**: Ubuntu 22.04 LTS + VS Code
 ___________________________________________________________________________________________________________________
 ### 📂 File Structure
     ```
@@ -17,9 +17,16 @@ ________________________________________________________________________________
     |   ├── MNIST             # 🖼️ MNIST Samples
     |   ├── Handwritten       # 🖼️ Handwritten Samples
     ├── src/                  # 📁 Source files
-    |   ├── test.py
+    |   ├── examine.py
+    |   ├── experiment.py 
+    |   ├── live_digit_recognition.py 
+    |   ├── plot.py 
+    |   ├── test_greek.py 
+    |   ├── test.py 
+    |   ├── train_dcgan.py 
+    |   ├── train_greek.py 
     |   ├── train.py 
-    |   ├── examine.py 
+    |   ├── visualize_gan.py 
     ├── trained_models        # 📁 Directory for saving trained models
     ├── README.md             # 📖 Project documentation
     ```
@@ -47,7 +54,7 @@ Trains a deep learning model on MNIST digits dataset. The model will be trained 
 
 Saves the trained model in trained_models folder. Create this folder before running the code.
 
-* `RUN test.py`
+* RUN `test.py`
 
 ### TaskE
 
@@ -60,7 +67,6 @@ Loads the pre-trained model from local path and tests the model using example da
 Eg. test.py ../data/Handwritten
 
 Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
-
 -------------------------------------------------------------------------------------------------------------------
 
 ## 2. Examine the network ---
@@ -74,23 +80,25 @@ Plot the weighted filters from first convolutional layer
 ### TaskB
 
 Visualize the weighted filter and first image from train dataset with applied filters
-
-
 -------------------------------------------------------------------------------------------------------------------
-
-
 
 ## 3. Transfer Leaning on Greek Letters
 
-Run `train_greek.py`
+RUN `train_greek.py`
 
 Trains a deep learning model on greek_train dataset. The model will be trained for 20 epochs, with each batch of training data containing 5 samples (batch_size = 5)
 
-Run `test_greek.py`
+RUN `test_greek.py`
 
 Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
+-------------------------------------------------------------------------------------------------------------------
 
+## 4. Design your own experiment
 
+RUN `experiment.py`
+
+Evaluates multiple CNN models with different hyperparameter combinations on the FashionMNIST dataset, saving the test accuracy and training time for each configuration to a CSV file. The process of generating different variations (136) of the model took around 1.5 hours on GPU device (GeForce 4060 RTX)
+-------------------------------------------------------------------------------------------------------------------
 
 ## Extension
 
@@ -131,3 +139,9 @@ Please refer to [Pytorch Tutorials](https://pytorch.org/tutorials/beginner/dcgan
    This script loads the trained DC-GAN model and displays a batch of generated images. It points to the model path from the training script, then visualizes images created by the trained generator.
 
 * The result images was saved to `outputs` dir for reference
+
+### 3. Live Digit Recognition
+
+RUN `live_digit_recognition.py`
+
+Creates a GUI using Tkinter for live handwritten digit recognition. Users can draw digits on a canvas, and upon clicking **Recognize**, the application preprocesses the drawn image and uses a pre-trained MNIST model to predict the digit. The predicted digit is then displayed on the screen.
