@@ -1,147 +1,166 @@
-# CS5330-proj5
-___________________________________________________________________________________________________________________
+# Deep Neural Networks for Digit and Greek Letter Recognition
+
+![Neural Network Visualization](Plots/Visualization_of_Convolutional_Layer.png)
+
+## 📑 Overview
+
+This project implements Convolutional Neural Networks (CNNs) for recognizing handwritten digits and Greek letters. The implementation includes training models from scratch, transfer learning, hyperparameter experimentation, and extensions such as GAN image generation and live digit recognition.
+
 ## 👥 Team Members
 
-1. **Yuyang Tian**
-2. **Arun Mekkad**
-___________________________________________________________________________________________________________________
-## 💻 Environment
+- **Yuyang Tian**
+- **Arun Mekkad**
 
-- **🖥️ Yuyang Tian**: macOS 10.13.1 + CLion
-- **🐧 Arun Mekkad**: Ubuntu 22.04 LTS + VS Code
-___________________________________________________________________________________________________________________
-### 📂 File Structure
-    ```
-    Proj5/
-    ├── data/                 # 📁 Data files
-    |   ├── MNIST             # 🖼️ MNIST Samples
-    |   ├── Handwritten       # 🖼️ Handwritten Samples
-    ├── src/                  # 📁 Source files
-    |   ├── examine.py
-    |   ├── experiment.py 
-    |   ├── live_digit_recognition.py 
-    |   ├── plot.py 
-    |   ├── test_greek.py 
-    |   ├── test.py 
-    |   ├── train_dcgan.py 
-    |   ├── train_greek.py 
-    |   ├── train.py 
-    |   ├── visualize_gan.py 
-    ├── trained_models        # 📁 Directory for saving trained models
-    ├── README.md             # 📖 Project documentation
-    ```
-___________________________________________________________________________________________________________________
+## 🔍 Features
 
-## 📌 Tasks
+- **MNIST Digit Recognition**: Train and test a CNN on the MNIST dataset
+- **Network Examination**: Visualize convolutional filters and their effects
+- **Transfer Learning**: Apply knowledge from digit recognition to Greek letter recognition
+- **Hyperparameter Experimentation**: Evaluate different CNN architectures
+- **DC-GAN Implementation**: Generate synthetic face images
+- **Live Digit Recognition**: Real-time recognition through a drawing interface
 
-## 1.Build and train a network to recognize digits
+## 📊 Results
 
-* RUN `train.py` 
+### Digit Recognition Performance
 
-### TaskA
+The model achieves high accuracy on the MNIST test set:
 
-The MNIST dataset is loaded using `load_mnist_test_data`, and the first 6 digits are visualized by calling `plot_mnist_samples`. Both steps are executed in the `main` function.
+![Accuracy Over Epochs](Plots/Accuracy_Over_Epochs_Plot.png)
+![Prediction Results](Plots/Prediction_Results.png)
 
-### TaskB
+### Convolutional Layer Visualization
 
-The CNN architecture is implemented in the `MyCNNNetwork` class. All layers are defined in the `__init__` method, and the `forward` method specifies how the input flows through those layers.
+Visualizing the CNN's first layer filters and their effect on input images:
 
-### TaskC
+![Filtered Images](Plots/Visualization_of_filtered_images.png)
 
-Trains a deep learning model on MNIST digits dataset. The model will be trained for 5 epochs, with each batch of training data containing 64 samples (batch_size = 64)
+### Hyperparameter Experiments
 
-### TaskD
+Impact of different hyperparameters on model performance:
 
-Saves the trained model in trained_models folder. Create this folder before running the code.
+![Test Accuracy vs Number of Epochs](Plots/Test_Accuracy_vs_Num_epochs.png)
+![Test Accuracy vs Convolutional Layers](Plots/Test_Accuracy_vs_Num_Convolutional_Layers.png)
 
-* RUN `test.py`
+## 🛠️ Installation
 
-### TaskE
+1. Clone this repository
+2. Install requirements:
+   ```
+   pip install torch torchvision matplotlib numpy pandas opencv-python pillow
+   ```
 
-Loads the pre-trained model from local path and tests the model using example dataset.
+## 🚀 Usage
 
-### TaskF
+### Digit Recognition
 
-* RUN `test.py <handwritten_directory_path>`
+Train a model on MNIST:
+```bash
+python src/train.py
+```
 
-Eg. test.py ../data/Handwritten
+Test the model:
+```bash
+python src/test.py
+```
 
-Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
--------------------------------------------------------------------------------------------------------------------
+Test on custom handwritten digits:
+```bash
+python src/test.py data/Handwritten
+```
 
-## 2. Examine the network ---
+### Greek Letter Recognition
 
-RUN `examine.py`
+Train on Greek letters:
+```bash
+python src/train_greek.py
+```
 
-### TaskA
+With extension (5 letters):
+```bash
+python src/train_greek.py --extension
+```
 
-Plot the weighted filters from first convolutional layer
+Test Greek letter recognition:
+```bash
+python src/test_greek.py
+```
 
-### TaskB
+### Network Visualization
 
-Visualize the weighted filter and first image from train dataset with applied filters
--------------------------------------------------------------------------------------------------------------------
+Examine the network's convolutional layers:
+```bash
+python src/examine.py
+```
 
-## 3. Transfer Leaning on Greek Letters
+### Hyperparameter Experimentation
 
-RUN `train_greek.py`
+Run experiments with different architectures:
+```bash
+python src/experiment.py
+```
 
-Trains a deep learning model on greek_train dataset. The model will be trained for 20 epochs, with each batch of training data containing 5 samples (batch_size = 5)
+### DC-GAN
 
-RUN `test_greek.py`
+Train the GAN:
+```bash
+python src/train_dcgan.py
+```
 
-Adds all the images within the provided directory, pre-processes it, runs the test and visualizes the predictions.
--------------------------------------------------------------------------------------------------------------------
+Visualize generated images:
+```bash
+python src/visualize_gan.py
+```
 
-## 4. Design your own experiment
+### Live Digit Recognition
 
-RUN `experiment.py`
+Launch the interactive drawing interface:
+```bash
+python src/live_digit_recognition.py
+```
 
-Evaluates multiple CNN models with different hyperparameter combinations on the FashionMNIST dataset, saving the test accuracy and training time for each configuration to a CSV file. The process of generating different variations (136) of the model took around 1.5 hours on GPU device (GeForce 4060 RTX)
--------------------------------------------------------------------------------------------------------------------
+## 📂 Project Structure
 
-## Extension
+```
+Project/
+├── data/                 # Data files
+│   ├── MNIST/            # MNIST dataset
+│   ├── Handwritten/      # Custom handwritten digits
+│   ├── greek_train_3/    # 3-class Greek letter dataset
+│   ├── greek_test_3/     # Test set for 3 Greek letters
+│   ├── greek_train_5/    # 5-class Greek letter dataset
+│   ├── greek_test_5/     # Test set for 5 Greek letters
+│   └── celeba_10k/       # Subset of CelebA dataset
+├── src/                  # Source code
+│   ├── train.py          # Train CNN on MNIST
+│   ├── test.py           # Test trained models
+│   ├── examine.py        # Visualize network layers
+│   ├── experiment.py     # Run hyperparameter experiments
+│   ├── train_greek.py    # Transfer learning for Greek letters
+│   ├── test_greek.py     # Test Greek letter recognition
+│   ├── train_dcgan.py    # Train DC-GAN
+│   ├── visualize_gan.py  # Generate images with DC-GAN
+│   ├── live_digit_recognition.py # Interactive recognition GUI
+│   └── plot.py           # Helper functions for visualization
+├── trained_models/       # Saved model weights
+├── outputs/              # Generated GAN images
+└── Plots/                # Visualization images
+```
 
-### 1.  More greek letters recognition
+## 🧪 Experiments
 
-### Train/ Test with Extension Flags
+Extensive experiments were conducted to find optimal hyperparameters for the CNN architecture:
 
-You can now pass `--extension` to both **`train_greek.py`** and **`test_greek.py`**:
+- Filter sizes (3×3, 5×5, 7×7)
+- Number of filters per layer (8, 16, 32, 64)
+- Number of convolutional layers (1-4)
+- Dropout rates (0-0.5)
+- Number of training epochs
 
-- **Added Lambda & Theta:**
-   These images were introduced in both training and testing sets. The total number of Greek letters in training set dynamically sets the size of the final fully connected layer.
-- **Training (`train_greek.py`)**
-  - **No extension flag**: Trains on `data/greek_train_3` and tests on `data/greek_test_3`.
-    - A alternative test dataset `data/greek_test_3(2)` is provided to play around
-    -  The default 3-class model is stored as `../trained_models/greek_trained_model.pth`.
-  - **`--extension` flag**: Trains on `data/greek_train_5` and tests on `data/greek_test_5` (because we’ve added lambda and theta).
-  - Automatically detects the number of letters and configures the model’s final layer.
-  - Saves as `../trained_models/greek_trained_{num_classes}.pth`.
-- **Testing (`test_greek.py`)**
-  - **No extension flag**: Loads the default model from `../trained_models/greek_trained_model.pth`.
-    - Performs letter recognition on the `test_greek_3` folder and visualizes the results.
-  - **`--extension` flag**: Loads `../trained_models/greek_trained_{num_classes}.pth`.
-    - Performs letter recognition on the `test_greek_5` folder and visualizes the results.
+The best performance was achieved with 3 convolutional layers, 32 filters per layer, a filter size of 3×3, and a dropout rate of 0.2.
 
-### 2. DC-GAN
+## 📝 Extensions
 
-Please refer to [Pytorch Tutorials](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html#results) for more information on how DC-GAN works under the hood.
-
-* **Training** with `train_dc_gan.py`
-
-  This script trains DC-GAN networks based on the `data/celeba_10k` folder, which contains 10,000 images from the [Large-scale CelebFaces Attributes (CelebA) Dataset](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html). Each image is associated with a celebrity ID (some celebrities have multiple images). The original CelebA dataset has over 200K images; for assignment purposes, it’s downsampled to 10K.
-
-  The generator model is saved as `../trained_models/gan_models_generator.pth` and the discriminator is saved as `../trained_models/gan_models_discriminator.pth`
-
-  **Note**: Training can take about 40 minutes on a CPU, so if you prefer, you can skip retraining and just load the existing model for generating images.
-
-* **Generating and Visualizing with `visualize_gan.py`**
-   This script loads the trained DC-GAN model and displays a batch of generated images. It points to the model path from the training script, then visualizes images created by the trained generator.
-
-* The result images was saved to `outputs` dir for reference
-
-### 3. Live Digit Recognition
-
-RUN `live_digit_recognition.py`
-
-Creates a GUI using Tkinter for live handwritten digit recognition. Users can draw digits on a canvas, and upon clicking **Recognize**, the application preprocesses the drawn image and uses a pre-trained MNIST model to predict the digit. The predicted digit is then displayed on the screen.
+1. **Enhanced Greek Letter Recognition**: Support for 5 Greek letters (alpha, beta, gamma, lambda, theta)
+2. **DC-GAN Implementation**: Generating realistic face images using deep convolutional GANs
+3. **Interactive Digit Recognition**: Real-time recognition through a Tkinter-based drawing interface
